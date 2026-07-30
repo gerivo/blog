@@ -1,0 +1,15 @@
+---
+const pathname = Astro.url.pathname;
+const { itemPath, itemName } = Astro.props;
+const equalsPathname = itemPath === pathname;
+---
+
+<li
+    class:list={[
+        "first:mr-auto px-2 py-1",
+        { "hover:underline": !equalsPathname },
+        { "bg-primary": equalsPathname },
+    ]}
+>
+    <a href={itemPath}>{itemName}</a>
+</li>

@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #e21a22ff;
+    --color-secondary: #161323ff;
+    --font-pixel: 'GNU Unifont', monospace;
+}
+
+@font-face {
+  font-family: 'GNU Unifont';
+  src: url('/fonts/unifont.otf') format('opentype'); 
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
