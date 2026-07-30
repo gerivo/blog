@@ -1,6 +1,9 @@
 ---
 import '../styles/global.css';
 import Navbar from '../components/Navbar.astro';
+const paths = Astro.url.pathname.split("/").filter(path => path);
+const lastPath = paths[paths.length-1];
+const title = (lastPath && lastPath !== "" ? lastPath : "home").toLowerCase();
 ---
 
 
@@ -11,7 +14,7 @@ import Navbar from '../components/Navbar.astro';
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
-		<title>home ;</title>
+		<title>{title} ;</title>
 	</head>
 	<body class="bg-secondary font-pixel px-30 py-10 text-white text-3xl">
 		<Navbar />
