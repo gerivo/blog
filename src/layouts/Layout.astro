@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar.astro';
 const paths = Astro.url.pathname.split("/").filter(path => path);
 const lastPath = paths[paths.length-1];
 const title = (lastPath && lastPath !== "" ? lastPath : "home").toLowerCase();
+const {withoutNavbar = false} = Astro.props
 ---
 
 
@@ -17,7 +18,7 @@ const title = (lastPath && lastPath !== "" ? lastPath : "home").toLowerCase();
 		<title>{title} ;</title>
 	</head>
 	<body class="bg-secondary font-pixel px-5 md:px-30 py-10 text-white text-3xl">
-		<Navbar />
+		{!withoutNavbar && <Navbar />}
 		<slot />
 	</body>
 </html>
