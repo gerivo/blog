@@ -7,14 +7,14 @@ import { glob, file } from 'astro/loaders';
 // 3. Import Zod
 import { z } from 'astro/zod';
 
-// 4. Define a `loader` and `schema` for each collection
 const sobre = defineCollection({
-  loader: glob({ base: './src/content/sobre', pattern: '**/*.{md,mdx}' }),
+  loader: file("./src/content/opiniones.json"),
   schema: z.object({
     title: z.string(),
-    description: z.string(),
+    date: z.iso.date(),
   }),
 });
+
 
 // 5. Export a single `collections` object to register your collection(s)
 export const collections = { sobre };

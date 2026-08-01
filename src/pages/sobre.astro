@@ -11,5 +11,6 @@ const entries = entriesFromCollection.map((entry) => ({
 ---
 
 <Layout>
+    {entries.length == 0 && <p>No escribí nada acá todavía</p>}
     <List items={entries} />
 </Layout>
