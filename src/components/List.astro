@@ -1,0 +1,22 @@
+---
+export interface ListItem {
+    id: string;
+    title: string;
+}
+
+interface Props {
+    items : ListItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="flex flex-col items-center min-h-100 max-h-100 w-full">
+    {
+        items.map((item) => (
+            <li class="hover:underline marker:content-['*'] display-list-item pl-2 hover:cursor-pointer">
+                <a href={item.id}>{item.title}</a>
+            </li>
+        ))
+    }
+</ul>

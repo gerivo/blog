@@ -1,24 +1,31 @@
 ---
-import '../styles/global.css';
-import Navbar from '../components/Navbar.astro';
-const paths = Astro.url.pathname.split("/").filter(path => path);
-const lastPath = paths[paths.length-1];
+import "../styles/global.css";
+import Navbar from "../components/Navbar.astro";
+const paths = Astro.url.pathname.split("/").filter((path) => path);
+const lastPath = paths[paths.length - 1];
 const title = (lastPath && lastPath !== "" ? lastPath : "home").toLowerCase();
-const {withoutNavbar = false} = Astro.props
+const { withoutNavbar = false, withScript = false } = Astro.props;
 ---
-
 
 <!doctype html>
 <html lang="en">
 	<head>
+		{
+			withScript && (
+				<script src="https://cdn.jsdelivr.net/npm/phaser@3.85.2/dist/phaser-arcade-physics.min.js" />
+			)
+		}
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<title>{title} ;</title>
 	</head>
-	<body class="bg-secondary font-pixel px-5 md:px-30 py-10 text-white text-3xl">
+	<body
+		class="bg-secondary font-pixel p-5 md:px-30 md:py-10 text-white text-3xl"
+	>
 		{!withoutNavbar && <Navbar />}
+		<div class="h-65 md:h-15"></div>
 		<slot />
 	</body>
 </html>
