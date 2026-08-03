@@ -1,12 +1,61 @@
 ---
-import NavbarItem from "./NavbarItem.astro"
-
+import NavbarItem from "./NavbarItem.astro";
 ---
 
-<nav class="fixed bg-secondary pb-2 md:p-0 top-5 flex justify-between right-5 left-5 md:right-30 md:left-30">
-    <ul class="flex flex-col sm:flex-row w-full justify-between gap-5">
-      <NavbarItem itemPath="/" itemName="g;" alwaysOn showToggle/>
-      <NavbarItem itemPath="/sobre/" itemName="sobre"/>
-      <NavbarItem itemPath="/juegos/" itemName="juegos"/>
-    </ul>
+<nav
+  class="fixed bg-secondary pb-2 md:p-0 top-5 flex justify-between right-5 left-5 md:right-30 md:left-30"
+>
+  <ul class="flex flex-col sm:flex-row w-full justify-between gap-5">
+    <div class="flex w-full justify-between">
+      <NavbarItem itemPath="/" itemName="g;" alwaysOn />
+      <NavbarItem itemPath="menu" itemName="menu" isMenu />
+    </div>
+    <NavbarItem itemPath="/sobre/" itemName="sobre" />
+    <NavbarItem itemPath="/juegos/" itemName="juegos" />
+  </ul>
 </nav>
+
+<script is:inline>
+  const menu = document.getElementById("menu");
+  const toggleMenu = () => {
+    if (!menu) return;
+    const isToggled = menu.getAttribute("data-toggle") ?? "true";
+    menu.setAttribute("data-toggle", isToggled == "true" ? "false" : "true");
+    console.log(menu.getAttribute("data-toggle"));
+  };
+
+  const shouldHide = (e, toggleState) => {
+    console.log(e);
+    const isMenu = e.getAttribute("data-is-menu") === "true";
+    const isAlwaysOn = e.getAttribute("data-always-on") === "true";
+
+    console.log(isMenu, isAlwaysOn, toggleState);
+
+    return !isMenu && !isAlwaysOn && !toggleState;
+  };
+
+  if (menu) menu.onclick = toggleMenu;
+
+  const mutationCallback = (mutationsList) => {
+    for (const mutation of mutationsList) {
+      if (
+        mutation.type !== "attributes" ||
+        mutation.attributeName !== "data-toggle"
+      ) {
+        return;
+      }
+
+      const toggleState = menu.getAttribute("data-toggle") === "true";
+      document.querySelectorAll("[data-is-menu]").forEach((e) => {
+        if (shouldHide(e, toggleState)) {
+          e.classList.add("hidden");
+        } else {
+          e.classList.remove("hidden");
+        }
+      });
+    }
+  };
+
+  const observer = new MutationObserver(mutationCallback);
+  observer.observe(menu, { attributes: true });
+</script>

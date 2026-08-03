@@ -1,15 +1,27 @@
 ---
+interface Props {
+    itemPath: string;
+    itemName: string;
+    alwaysOn?: boolean;
+    isMenu?: boolean;
+}
+
 const pathname = Astro.url.pathname;
-const { itemPath, itemName, alwaysOn } = Astro.props;
+const { itemPath, itemName, alwaysOn = false, isMenu = false } = Astro.props;
 const itemIsFirstPath = itemPath.split("/")[1] === pathname.split("/")[1];
 ---
 
 <li
+    id={isMenu ? "menu" : "menu-item-" + itemName.toLowerCase()}
     class:list={[
         "first:mr-auto px-2 py-1",
-        { "hover:underline": !itemIsFirstPath && !alwaysOn},
+        { "hover:underline": !itemIsFirstPath && !alwaysOn },
         { "bg-primary": itemIsFirstPath || alwaysOn },
+        { "md:hidden" : isMenu}
     ]}
+    data-is-menu={isMenu}
+    data-always-on={alwaysOn}
 >
-    <a href={itemPath}>{itemName}</a>
+    {!isMenu && <a href={itemPath}>{itemName}</a>}
+    {isMenu && <span>{itemName}</span>}
 </li>
