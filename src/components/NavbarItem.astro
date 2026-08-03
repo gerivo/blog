@@ -17,7 +17,7 @@ const itemIsFirstPath = itemPath.split("/")[1] === pathname.split("/")[1];
         "first:mr-auto px-2 py-1",
         { "hover:underline": !itemIsFirstPath && !alwaysOn },
         { "bg-primary": itemIsFirstPath || alwaysOn },
-        { "md:hidden" : isMenu}
+        { "md:hidden": isMenu },
     ]}
     data-is-menu={isMenu}
     data-always-on={alwaysOn}

@@ -3,7 +3,7 @@ import NavbarItem from "./NavbarItem.astro";
 ---
 
 <nav
-  class="fixed bg-secondary pb-2 md:p-0 top-5 flex justify-between right-5 left-5 md:right-30 md:left-30"
+  class="fixed bg-secondary md:p-0 top-5 flex justify-between right-5 left-5 md:right-30 md:left-30"
 >
   <ul class="flex flex-col sm:flex-row w-full justify-between gap-5">
     <div class="flex w-full justify-between">
@@ -17,24 +17,34 @@ import NavbarItem from "./NavbarItem.astro";
 
 <script is:inline>
   const menu = document.getElementById("menu");
+  const isMobile = mediaQuery = window.matchMedia('(width < 48rem )').matches;
   const toggleMenu = () => {
     if (!menu) return;
-    const isToggled = menu.getAttribute("data-toggle") ?? "true";
+    // mobile => initally hidden, desktop => initially and always shown
+    const isToggled = menu.getAttribute("data-toggle") ?? !isMobile;
     menu.setAttribute("data-toggle", isToggled == "true" ? "false" : "true");
     console.log(menu.getAttribute("data-toggle"));
   };
 
   const shouldHide = (e, toggleState) => {
-    console.log(e);
     const isMenu = e.getAttribute("data-is-menu") === "true";
     const isAlwaysOn = e.getAttribute("data-always-on") === "true";
-
-    console.log(isMenu, isAlwaysOn, toggleState);
 
     return !isMenu && !isAlwaysOn && !toggleState;
   };
 
+  const hideAllMenuItems = (toggleState) => {
+    document.querySelectorAll("[data-is-menu]").forEach((e) => {
+      if (shouldHide(e, toggleState)) {
+        e.classList.add("hidden");
+      } else {
+        e.classList.remove("hidden");
+      }
+    });
+  };
+
   if (menu) menu.onclick = toggleMenu;
+  if (isMobile) hideAllMenuItems(false);
 
   const mutationCallback = (mutationsList) => {
     for (const mutation of mutationsList) {
@@ -45,14 +55,7 @@ import NavbarItem from "./NavbarItem.astro";
         return;
       }
 
-      const toggleState = menu.getAttribute("data-toggle") === "true";
-      document.querySelectorAll("[data-is-menu]").forEach((e) => {
-        if (shouldHide(e, toggleState)) {
-          e.classList.add("hidden");
-        } else {
-          e.classList.remove("hidden");
-        }
-      });
+      hideAllMenuItems(menu.getAttribute("data-toggle") === "true");
     }
   };
 
